@@ -1,6 +1,5 @@
 import streamlit as st
 
-# ---------- Expanded mood-font dictionary with single moods as keys ----------
 mood_fonts = {
     "Passion": [
         {"name": "Impact", "google_font": "Impact"},
@@ -94,31 +93,33 @@ mood_fonts = {
     ],
 }
 
-st.set_page_config(page_title="TypeMood - Single Mood Fonts", layout="centered")
+st.set_page_config(page_title="TypeMood - Improved Search", layout="centered")
 
 st.markdown("""
     <h1 style='text-align: center;'>TypeMood</h1>
     <p style='text-align: center; font-size: 1.1em;'>Enter a mood keyword to find matching fonts.</p>
 """, unsafe_allow_html=True)
 
-user_input = st.text_input("Enter a mood keyword (e.g., Passion, Energy, Romance)").strip().capitalize()
+user_input = st.text_input("Enter a mood keyword (e.g., passion, energy, romance)").strip().lower()
 
 if user_input:
-    # case insensitive lookup
-    matched_moods = [m for m in mood_fonts.keys() if m.lower() == user_input.lower()]
+    # Partial case-insensitive match of moods
+    matched_moods = [m for m in mood_fonts.keys() if user_input in m.lower()]
     if matched_moods:
-        mood = matched_moods[0]
-        fonts = mood_fonts[mood]
-        st.markdown(f"### Fonts for mood: {mood}")
-        for font in fonts:
-            font_name = font['name']
-            google_font = font['google_font']
-            font_link = f"https://fonts.googleapis.com/css2?family={google_font}&display=swap"
-            st.markdown(f'<link href="{font_link}" rel="stylesheet">', unsafe_allow_html=True)
-            st.markdown(f'<div style="font-family:\'{font_name}\', sans-serif; font-size: 32px; margin-bottom: 12px;">{font_name}</div>', unsafe_allow_html=True)
-            st.markdown(f'<div style="font-family:\'{font_name}\', sans-serif; font-size: 18px; color: gray; margin-bottom: 32px;">The quick brown fox jumps over the lazy dog.</div>', unsafe_allow_html=True)
+        for mood in matched_moods:
+            fonts = mood_fonts[mood]
+            st.markdown(f"### Fonts for mood: {mood}")
+            for font in fonts:
+                font_name = font['name']
+                google_font = font['google_font']
+                font_link = f"https://fonts.googleapis.com/css2?family={google_font}&display=swap"
+                st.markdown(f'<link href="{font_link}" rel="stylesheet">', unsafe_allow_html=True)
+                st.markdown(f'<div style="font-family:\'{font_name}\', sans-serif; font-size: 32px; margin-bottom: 12px;">{font_name}</div>', unsafe_allow_html=True)
+                st.markdown(f'<div style="font-family:\'{font_name}\', sans-serif; font-size: 18px; color: gray; margin-bottom: 32px;">The quick brown fox jumps over the lazy dog.</div>', unsafe_allow_html=True)
     else:
-        st.warning(f"No fonts found for mood: '{user_input}'. Try another mood keyword.")
+        st.warning("😕 No exact mood match found. Please check your spelling or try a listed mood.")
+        st.markdown("**Available moods:**")
+        st.write(", ".join(sorted(mood_fonts.keys())))
 else:
     st.info("Please enter a mood keyword to see matching fonts.")
 
