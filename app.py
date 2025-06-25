@@ -65,30 +65,32 @@ st.markdown("""
 
 user_input = st.text_input("🎯 Enter Mood or Vibe (e.g., Elegant, Bold, Romantic)").strip()
 
-# Show fonts for matched moods
-def show_fonts(fonts):
+# Show fonts for exact match only
+def show_fonts(mood, fonts):
+    st.markdown(f"<h3 style='margin-top: 40px;'>{mood}</h3>", unsafe_allow_html=True)
     for font in fonts:
         font_name = font['name']
         google_font = font['google_font']
         font_link = f"https://fonts.googleapis.com/css2?family={google_font}&display=swap"
         st.markdown(f"""
             <link href="{font_link}" rel="stylesheet">
-            <div style="font-family: '{font_name}', sans-serif; font-size: 36px; margin: 16px 0;">
+            <div style="font-family: '{font_name}', sans-serif; font-size: 32px; padding-bottom: 12px;">
                 {font_name}
             </div>
         """, unsafe_allow_html=True)
 
 if user_input:
-    found = False
-    for mood, fonts in mood_fonts.items():
-        if user_input.lower() in mood.lower():
-            st.subheader(f"🖋️ Fonts for: *{mood}*")
-            show_fonts(fonts)
-            found = True
-    if not found:
-        st.warning("😕 No matching mood found. Try keywords like 'romantic', 'luxury', or 'playful'.")
+    matched_mood = None
+    for mood in mood_fonts:
+        if user_input.lower() == mood.lower():
+            matched_mood = mood
+            break
+    if matched_mood:
+        show_fonts(matched_mood, mood_fonts[matched_mood])
+    else:
+        st.warning("😕 No exact mood match found. Please check your spelling or try a listed mood.")
 else:
     st.info("👈 Start typing a mood or vibe to explore matching fonts.")
 
 st.markdown("---")
-st.markdown("<small>Built with ❤️ using Streamlit • © 2025 TypeMood</small>", unsafe_allow_html=True)
+st.markdown("<small>Built with ❤️ by Athiramol PS — June 25, 2025</small>", unsafe_allow_html=True)
