@@ -102,6 +102,8 @@ st.markdown("""
 
 user_input = st.text_input("Enter a mood keyword (e.g., Passion, Energy, Romance)").strip().lower()
 
+sample_text = "The children play happily in the sunny green park."
+
 if user_input:
     matched_moods = [m for m in mood_fonts.keys() if user_input in m.lower()]
     if matched_moods:
@@ -116,14 +118,13 @@ if user_input:
 
                 st.markdown(f"<b>Font: {font_name}</b>", unsafe_allow_html=True)
 
-                # Show h1 to h6 using divs styled with font-family and font sizes matching typical h1-h6 sizes
                 st.markdown(f"""
-                <div style="font-family:'{font_name}', sans-serif; font-size: 2.5em; margin-bottom: 0;">h1. The quick brown fox jumps over the lazy dog.</div>
-                <div style="font-family:'{font_name}', sans-serif; font-size: 2em; margin-bottom: 0;">h2. The quick brown fox jumps over the lazy dog.</div>
-                <div style="font-family:'{font_name}', sans-serif; font-size: 1.75em; margin-bottom: 0;">h3. The quick brown fox jumps over the lazy dog.</div>
-                <div style="font-family:'{font_name}', sans-serif; font-size: 1.5em; margin-bottom: 0;">h4. The quick brown fox jumps over the lazy dog.</div>
-                <div style="font-family:'{font_name}', sans-serif; font-size: 1.25em; margin-bottom: 0;">h5. The quick brown fox jumps over the lazy dog.</div>
-                <div style="font-family:'{font_name}', sans-serif; font-size: 1em; margin-bottom: 24px;">h6. The quick brown fox jumps over the lazy dog.</div>
+                <div style="font-family:'{font_name}', sans-serif; font-size: 2.5em; margin-bottom: 0;">h1. {sample_text}</div>
+                <div style="font-family:'{font_name}', sans-serif; font-size: 2em; margin-bottom: 0;">h2. {sample_text}</div>
+                <div style="font-family:'{font_name}', sans-serif; font-size: 1.75em; margin-bottom: 0;">h3. {sample_text}</div>
+                <div style="font-family:'{font_name}', sans-serif; font-size: 1.5em; margin-bottom: 0;">h4. {sample_text}</div>
+                <div style="font-family:'{font_name}', sans-serif; font-size: 1.25em; margin-bottom: 0;">h5. {sample_text}</div>
+                <div style="font-family:'{font_name}', sans-serif; font-size: 1em; margin-bottom: 24px;">h6. {sample_text}</div>
                 """, unsafe_allow_html=True)
     else:
         st.warning("😕 No moods matched. Check spelling or try another.")
