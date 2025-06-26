@@ -48,7 +48,7 @@ st.set_page_config(page_title="TypeMood", layout="wide")
 
 # Title and purpose
 st.markdown("""
-    <h1 style='text-align: center; color: #6A1B9A;'>🎨 TypeMood</h1>
+    <h1 style='text-align: center; color: #6A1B9A;'>✒️ TypeMood</h1>
     <p style='text-align: center; font-size: 18px; color: gray;'>
         A mood-based font exploration app for UI/UX designers and content creators.<br>
         Type or choose a mood to preview fonts with h1 to h6 heading levels.
