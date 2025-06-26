@@ -55,23 +55,23 @@ st.markdown("""
     </p>
 """, unsafe_allow_html=True)
 
-# Input layout
+# Input layout: text input first, then dropdown
 st.write("### Type a Mood or Choose from Dropdown:")
-col1, col2 = st.columns([2, 1])
+col1, col2 = st.columns([2, 1])  # text input wider
 with col1:
-    typed_mood = st.text_input("Type a mood (e.g., Calm, Bold, Luxury)").strip().lower()
+    typed_mood = st.text_input("Type a mood (e.g., Calm, Bold, Luxury)", key="typed_mood").strip().lower()
 with col2:
-    selected_mood = st.selectbox("Or select a mood:", [""] + sorted(mood_fonts.keys()))
+    selected_mood = st.selectbox("Select a mood from list:", [""] + sorted(mood_fonts.keys()), key="dropdown_mood")
     selected_mood = selected_mood.strip().lower()
 
-# Determine final mood(s)
+# Determine final moods to show fonts for
 final_moods = []
 if typed_mood:
     final_moods = [m for m in mood_fonts if typed_mood in m.lower()]
 elif selected_mood:
     final_moods = [m for m in mood_fonts if selected_mood == m.lower()]
 
-# Show fonts
+# Show fonts for each matched mood
 if final_moods:
     for mood in final_moods:
         st.subheader(f"Fonts for Mood: {mood}")
