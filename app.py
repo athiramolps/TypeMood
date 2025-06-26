@@ -1,6 +1,6 @@
 import streamlit as st
 
-# Font data for each mood
+# Mood to font mapping
 mood_fonts = {
     "Passion": [{"name": "Impact", "google_font": "Impact"}, {"name": "Bebas Neue", "google_font": "Bebas+Neue"}],
     "Energy": [{"name": "Anton", "google_font": "Anton"}],
@@ -43,58 +43,62 @@ mood_fonts = {
     "Techy": [{"name": "Share Tech Mono", "google_font": "Share+Tech+Mono"}],
 }
 
-# Page config
-st.set_page_config(page_title="TypeMood - Font Heading Levels", layout="centered")
+# Page configuration
+st.set_page_config(page_title="TypeMood", layout="wide")
 
-# Title and caption
+# Title and purpose
 st.markdown("""
-    <h1 style='text-align: center;'>TypeMood</h1>
-    <p style='text-align: center; font-size: 1.1em; color: gray;'>
-        A visual font style recommender app for UI designers, brand creators, and typography enthusiasts.<br>
-        Choose or type a mood to preview matching font styles across heading levels.
+    <h1 style='text-align: center; color: #6A1B9A;'>🎨 TypeMood</h1>
+    <p style='text-align: center; font-size: 18px; color: gray;'>
+        A mood-based font exploration app for UI/UX designers and content creators.<br>
+        Type or choose a mood to preview fonts with h1 to h6 heading levels.
     </p>
 """, unsafe_allow_html=True)
 
-# Dropdown and input in a single line
-mood_options = sorted(mood_fonts.keys())
-col1, col2 = st.columns([1, 1.2])
-
+# Input layout
+st.write("### Type a Mood or Choose from Dropdown:")
+col1, col2 = st.columns([2, 1])
 with col1:
-    selected_mood = st.selectbox("🎨 Select Mood", [""] + mood_options)
-
+    typed_mood = st.text_input("Type a mood (e.g., Calm, Bold, Luxury)").strip().lower()
 with col2:
-    user_input = st.text_input("🔍 Type Mood").strip().lower()
+    selected_mood = st.selectbox("Or select a mood:", [""] + sorted(mood_fonts.keys()))
+    selected_mood = selected_mood.strip().lower()
 
-# Collect active moods from both inputs
-active_moods = []
-if selected_mood:
-    active_moods.append(selected_mood)
-if user_input:
-    matched_moods = [m for m in mood_fonts if user_input in m.lower()]
-    active_moods.extend(m for m in matched_moods if m not in active_moods)
+# Determine final mood(s)
+final_moods = []
+if typed_mood:
+    final_moods = [m for m in mood_fonts if typed_mood in m.lower()]
+elif selected_mood:
+    final_moods = [m for m in mood_fonts if selected_mood == m.lower()]
 
-# Display font previews
-if active_moods:
-    for mood in active_moods:
-        fonts = mood_fonts[mood]
-        st.markdown(f"### Fonts for mood: {mood}")
-        for font in fonts:
+# Show fonts
+if final_moods:
+    for mood in final_moods:
+        st.subheader(f"Fonts for Mood: {mood}")
+        for font in mood_fonts[mood]:
             font_name = font['name']
             google_font = font['google_font']
             font_link = f"https://fonts.googleapis.com/css2?family={google_font}&display=swap"
             st.markdown(f'<link href="{font_link}" rel="stylesheet">', unsafe_allow_html=True)
+
             st.markdown(f"<b>Font: {font_name}</b>", unsafe_allow_html=True)
             st.markdown(f"""
-                <div style="font-family:'{font_name}', sans-serif; font-size: 2.5em; margin-bottom: 0;">h1. The children play happily in the sunny green park.</div>
-                <div style="font-family:'{font_name}', sans-serif; font-size: 2em; margin-bottom: 0;">h2. The children play happily in the sunny green park.</div>
-                <div style="font-family:'{font_name}', sans-serif; font-size: 1.75em; margin-bottom: 0;">h3. The children play happily in the sunny green park.</div>
-                <div style="font-family:'{font_name}', sans-serif; font-size: 1.5em; margin-bottom: 0;">h4. The children play happily in the sunny green park.</div>
-                <div style="font-family:'{font_name}', sans-serif; font-size: 1.25em; margin-bottom: 0;">h5. The children play happily in the sunny green park.</div>
-                <div style="font-family:'{font_name}', sans-serif; font-size: 1em; margin-bottom: 24px;">h6. The children play happily in the sunny green park.</div>
+                <div style="font-family:'{font_name}', sans-serif; font-size: 2.5em;">h1. The children play happily in the sunny green park.</div>
+                <div style="font-family:'{font_name}', sans-serif; font-size: 2em;">h2. The children play happily in the sunny green park.</div>
+                <div style="font-family:'{font_name}', sans-serif; font-size: 1.75em;">h3. The children play happily in the sunny green park.</div>
+                <div style="font-family:'{font_name}', sans-serif; font-size: 1.5em;">h4. The children play happily in the sunny green park.</div>
+                <div style="font-family:'{font_name}', sans-serif; font-size: 1.25em;">h5. The children play happily in the sunny green park.</div>
+                <div style="font-family:'{font_name}', sans-serif; font-size: 1em; margin-bottom: 30px;">h6. The children play happily in the sunny green park.</div>
             """, unsafe_allow_html=True)
 else:
-    st.info("Please select or type a mood to preview matching font styles.")
+    st.info("🔎 Type or select a mood to preview matching fonts.")
 
 # Footer
-st.markdown("---")
-st.markdown("<small>Built with ❤️ by Athiramol PS — June 25, 2025</small>", unsafe_allow_html=True)
+st.markdown("""
+    <hr style="margin-top: 50px;">
+    <div style="text-align: center; font-size: 14px; color: gray;">
+        © All rights reserved by <strong>Athiramol PS</strong><br>
+        Published on: <strong>June 26, 2025</strong><br>
+        This project, <em>“TypeMood: A Visual Guide to Mood-Based Typography”</em>, is an original creation.
+    </div>
+""", unsafe_allow_html=True)
