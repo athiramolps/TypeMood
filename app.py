@@ -43,10 +43,10 @@ mood_fonts = {
     "Techy": [{"name": "Share Tech Mono", "google_font": "Share+Tech+Mono"}],
 }
 
-# Streamlit config
+# Page config
 st.set_page_config(page_title="TypeMood - Font Heading Levels", layout="centered")
 
-# Title & purpose caption
+# Title and caption
 st.markdown("""
     <h1 style='text-align: center;'>TypeMood</h1>
     <p style='text-align: center; font-size: 1.1em; color: gray;'>
@@ -55,12 +55,17 @@ st.markdown("""
     </p>
 """, unsafe_allow_html=True)
 
-# Dropdown and text input
+# Dropdown and input in a single line
 mood_options = sorted(mood_fonts.keys())
-selected_mood = st.selectbox("🎨 Select a mood from the list:", [""] + mood_options)
-user_input = st.text_input("🔍 Or type a mood keyword (e.g., Passion, Calm, Luxury)").strip().lower()
+col1, col2 = st.columns([1, 1.2])
 
-# Combine dropdown and input
+with col1:
+    selected_mood = st.selectbox("🎨 Select Mood", [""] + mood_options)
+
+with col2:
+    user_input = st.text_input("🔍 Type Mood").strip().lower()
+
+# Collect active moods from both inputs
 active_moods = []
 if selected_mood:
     active_moods.append(selected_mood)
@@ -68,7 +73,7 @@ if user_input:
     matched_moods = [m for m in mood_fonts if user_input in m.lower()]
     active_moods.extend(m for m in matched_moods if m not in active_moods)
 
-# Display fonts for selected/typed moods
+# Display font previews
 if active_moods:
     for mood in active_moods:
         fonts = mood_fonts[mood]
@@ -88,7 +93,7 @@ if active_moods:
                 <div style="font-family:'{font_name}', sans-serif; font-size: 1em; margin-bottom: 24px;">h6. The children play happily in the sunny green park.</div>
             """, unsafe_allow_html=True)
 else:
-    st.info("Please select or enter a mood keyword to see fonts with h1-h6 preview.")
+    st.info("Please select or type a mood to preview matching font styles.")
 
 # Footer
 st.markdown("---")
