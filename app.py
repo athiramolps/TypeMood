@@ -48,10 +48,11 @@ st.set_page_config(page_title="TypeMood", layout="wide")
 
 # Title and purpose
 st.markdown("""
-    <h1 style='text-align: center; color: #6A1B9A;'>✒️ TypeMood</h1>
+    <h1 style='text-align: center; color: #6A1B9A;'>🎨 TypeMood</h1>
     <p style='text-align: center; font-size: 18px; color: gray;'>
         A mood-based font exploration app for UI/UX designers and content creators.<br>
-        Type or choose a mood to preview fonts with h1 to h6 heading levels.
+        Type or choose a mood to preview fonts with h1 to h6 heading levels.<br>
+        Customize size and font style below.
     </p>
 """, unsafe_allow_html=True)
 
@@ -64,12 +65,29 @@ with col2:
     selected_mood = st.selectbox("Select a mood from list:", [""] + sorted(mood_fonts.keys()), key="dropdown_mood")
     selected_mood = selected_mood.strip().lower()
 
+# Style controls
+st.write("### Customize Text Style:")
+col3, col4, col5, col6 = st.columns([1, 1, 1, 1])
+with col3:
+    font_size = st.selectbox("Font size (px)", ["16", "18", "20", "24", "30", "36", "48"], index=2)
+with col4:
+    bold = st.checkbox("Bold")
+with col5:
+    italic = st.checkbox("Italic")
+with col6:
+    underline = st.checkbox("Underline")
+
 # Determine final moods to show fonts for
 final_moods = []
 if typed_mood:
     final_moods = [m for m in mood_fonts if typed_mood in m.lower()]
 elif selected_mood:
     final_moods = [m for m in mood_fonts if selected_mood == m.lower()]
+
+# Prepare style string for font styles
+style_font_weight = "bold" if bold else "normal"
+style_font_style = "italic" if italic else "normal"
+style_text_decoration = "underline" if underline else "none"
 
 # Show fonts for each matched mood
 if final_moods:
@@ -82,14 +100,29 @@ if final_moods:
             st.markdown(f'<link href="{font_link}" rel="stylesheet">', unsafe_allow_html=True)
 
             st.markdown(f"<b>Font: {font_name}</b>", unsafe_allow_html=True)
-            st.markdown(f"""
-                <div style="font-family:'{font_name}', sans-serif; font-size: 2.5em;">h1. The children play happily in the sunny green park.</div>
-                <div style="font-family:'{font_name}', sans-serif; font-size: 2em;">h2. The children play happily in the sunny green park.</div>
-                <div style="font-family:'{font_name}', sans-serif; font-size: 1.75em;">h3. The children play happily in the sunny green park.</div>
-                <div style="font-family:'{font_name}', sans-serif; font-size: 1.5em;">h4. The children play happily in the sunny green park.</div>
-                <div style="font-family:'{font_name}', sans-serif; font-size: 1.25em;">h5. The children play happily in the sunny green park.</div>
-                <div style="font-family:'{font_name}', sans-serif; font-size: 1em; margin-bottom: 30px;">h6. The children play happily in the sunny green park.</div>
-            """, unsafe_allow_html=True)
+
+            # Display h1 to h6 text with selected styles
+            for tag, size_em in zip(
+                ["h1", "h2", "h3", "h4", "h5", "h6"], 
+                [2.5, 2, 1.75, 1.5, 1.25, 1]
+            ):
+                font_size_px = int(font_size)
+                # Calculate final size: base size_em * font_size px / 16 (default browser font size)
+                computed_size = size_em * font_size_px
+                st.markdown(
+                    f"""
+                    <div style="
+                        font-family:'{font_name}', sans-serif; 
+                        font-size:{computed_size}px;
+                        font-weight:{style_font_weight};
+                        font-style:{style_font_style};
+                        text-decoration:{style_text_decoration};
+                        margin-bottom: 10px;
+                    ">
+                        {tag}. The children play happily in the sunny green park.
+                    </div>
+                    """, unsafe_allow_html=True
+                )
 else:
     st.info("🔎 Type or select a mood to preview matching fonts.")
 
