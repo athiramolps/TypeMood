@@ -31,15 +31,28 @@ mood_fonts = {
     "Digital": [{"name": "Orbitron", "google_font": "Orbitron"}],
     "Clean": [{"name": "Exo", "google_font": "Exo"}],
     "Futuristic": [{"name": "Roboto Mono", "google_font": "Roboto+Mono"}],
+    "Minimalist": [{"name": "Work Sans", "google_font": "Work+Sans"}],
+    "Mysterious": [{"name": "UnifrakturCook", "google_font": "UnifrakturCook"}],
+    "Professional": [{"name": "Open Sans", "google_font": "Open+Sans"}],
+    "Bold": [{"name": "Oswald", "google_font": "Oswald"}],
+    "Sad": [{"name": "Crimson Text", "google_font": "Crimson+Text"}],
+    "Happy": [{"name": "Fredoka", "google_font": "Fredoka"}],
+    "Vintage": [{"name": "Special Elite", "google_font": "Special+Elite"}],
+    "Retro": [{"name": "Bangers", "google_font": "Bangers"}],
+    "Creative": [{"name": "Gloria Hallelujah", "google_font": "Gloria+Hallelujah"}],
+    "Techy": [{"name": "Share Tech Mono", "google_font": "Share+Tech+Mono"}],
 }
 
 # Streamlit config
 st.set_page_config(page_title="TypeMood - Font Heading Levels", layout="centered")
 
-# Title
+# Title & purpose caption
 st.markdown("""
     <h1 style='text-align: center;'>TypeMood</h1>
-    <p style='text-align: center; font-size: 1.1em;'>Choose or type a mood keyword to see fonts with h1-h6 preview.</p>
+    <p style='text-align: center; font-size: 1.1em; color: gray;'>
+        A visual font style recommender app for UI designers, brand creators, and typography enthusiasts.<br>
+        Choose or type a mood to preview matching font styles across heading levels.
+    </p>
 """, unsafe_allow_html=True)
 
 # Dropdown and text input
